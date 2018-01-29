@@ -3,4 +3,16 @@
 @import "bootstrap";
 
 .side { padding: 4ex; text-align: center; }
+
 h1 { text-align: center; }
+
+.tile { 
+	height: 100px;
+	width: 100px;
+	text-align: center;
+}
+
+.grid {
+	width: 400px;
+	height: 400px;	
+}
