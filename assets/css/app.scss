@@ -8,11 +8,18 @@ h1 { text-align: center; }
 
 .tile { 
 	height: 100px;
+	float: left;
 	width: 100px;
 	text-align: center;
 }
 
+.score {
+	float: left;
+	padding : 0px;
+}
+
 .grid {
+	float: left;
 	width: 400px;
 	height: 400px;	
 }
