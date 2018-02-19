@@ -1,8 +1,7 @@
 <h1>Memory Game</h1>
 
-<div id="game">
-  Loading...
-</div>
-
-
-
+<!--https://hexdocs.pm/phoenix_html/Phoenix.HTML.Form.html -->
+<%= form_for @conn, page_path(@conn, :new), fn f -> %>
+    <%= text_input f, :name, [placeholder: "Enter game name"] %>
+  <%= submit "Join Game" %>
+<% end %>
