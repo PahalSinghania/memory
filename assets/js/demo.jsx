@@ -28,8 +28,13 @@ class Demo extends React.Component {
 	toggle(side) {
 		this.channel.push("guess", {index: side})
                   	.receive("ok", this.gotView.bind(this))
-                	.receive("error", resp => {console.log("Unable to join", resp)});
-	
+                	.receive("error", resp => {console.log("Unable to toggle", resp)});
+
+		if (this.state.second != -1 && this.state.active == 0) {
+			this.setTimeout(()=> {}, 1500);
+                        this.channel.push("reset")
+				.recieve("ok", this.gotView.bind(this))			
+		}	
 	}
 	
 	gotView(view) {
@@ -46,11 +51,16 @@ class Demo extends React.Component {
 	render() {
 		var toggle = this.toggle.bind(this);
 		var restart = this.restart.bind(this);
+		var j = 0;
 		var value =  ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
 		for (let i = 0; i < this.state.tiles.length; i++) {
 			if (this.state.visible[i] == 1 || this.state.first == i || this.state.second == i) {
 				value[i] = this.state.tiles[i];
+				j++
 			}
+		}
+		if (j == 16) {
+			alert("Congratulations! You Win");
 		}
 
 		return (
