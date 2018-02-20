@@ -17,6 +17,8 @@ defmodule Memory.Game do
        visible: game.visible,
        clicks: game.clicks, 
        score: game.score,
+       active: game.active,
+       matches: game.matches,
        first: game.first,
        second: game.second
     }
@@ -37,7 +39,7 @@ defmodule Memory.Game do
     {c, a, f, s, m, sc} = cond do
       a == 0 && f != i && y != 1 -> {c + 1, 1, i, -1, m, sc}
       a == 1 && f != i && Enum.at(t, f) == x && y != 1-> {c + 1, 0, f, i, m + 1, sc + 10}
-      a == 1 && f != i && y != 1 -> {c + 1, 0, f, i, m, sc - 2}
+      a == 1 && f != i && Enum.at(t,f) != x && y != 1 -> {c + 1, 2, f, i, m, sc - 2}
       true -> {c, a, f, s, m, sc} 	
     end
 
@@ -47,6 +49,11 @@ defmodule Memory.Game do
     end
     %{state | clicks: c, visible: v, active: a, first: f, second: s, matches: m, score: sc}
     
+  end
+
+  def reset(state) do
+    x = -1;
+    %{state | first: x, second: x, active: 0}
   end
 
   def make_tiles do

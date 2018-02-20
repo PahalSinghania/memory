@@ -14,9 +14,9 @@ class Demo extends React.Component {
 		this.state = { 
                   tiles:[],
                   visible: [],
-                  clicks: 0,
-                  active: 0,
-                  matches: 0,
+                  clicks: '',
+                  active: '',
+                  matches: '',
                   score: 20,
                   second: -1,
                   first: -1};
@@ -29,17 +29,20 @@ class Demo extends React.Component {
 		this.channel.push("guess", {index: side})
                   	.receive("ok", this.gotView.bind(this))
                 	.receive("error", resp => {console.log("Unable to toggle", resp)});
-
-		if (this.state.second != -1 && this.state.active == 0) {
-			this.setTimeout(()=> {}, 1500);
-                        this.channel.push("reset")
-				.recieve("ok", this.gotView.bind(this))			
-		}	
 	}
 	
 	gotView(view) {
     		console.log("New view", view);
     		this.setState(view.game);
+		if (view.game.active == 2) {
+			$('#board').css('pointer-events', 'none');
+			setTimeout (() => {	
+                        this.channel.push("reset")
+				.recieve("ok", this.gotView.bind(this))
+				.recieve("error", resp => {console.log("reset failiure", resp)})}, 1000);
+			$('#board').css('pointer-events', 'auto');
+			render();	
+		}
   	}
 
 	restart() {
@@ -59,13 +62,16 @@ class Demo extends React.Component {
 				j++
 			}
 		}
+
+		let x = "";
 		if (j == 16) {
 			alert("Congratulations! You Win");
+			x = "Congratulations! You Win!";
 		}
 
 		return (
 			<div>
-				<div className="grid">
+				<div className="grid" id = "grid">
 				<div className = "row">
 					<button onClick={ () => toggle(0) } className = "tile">{value[0] }</button>
 					<button onClick={ () => toggle(1) } className = "tile">{value[1]}</button>
@@ -101,6 +107,7 @@ class Demo extends React.Component {
 					</div>
 					<br />
 					<div>
+						<p>{x + " "+ this.state.matches}</p>
 						<button className = "restart" onClick = {() => restart()}> restart </button>
 					</div>
 				</div>
