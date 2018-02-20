@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button } from 'reactstrap';
 
-export default function run_demo(root, channel) {
-   
+export default function run_demo(root, channel) { 
   ReactDOM.render(<Demo channel = {channel}/>, root);
 }
 
@@ -37,11 +36,9 @@ class Demo extends React.Component {
 		if (view.game.active == 2) {
 			$('#board').css('pointer-events', 'none');
 			setTimeout (() => {	
-                        this.channel.push("reset")
-				.recieve("ok", this.gotView.bind(this))
-				.recieve("error", resp => {console.log("reset failiure", resp)})}, 1000);
+				var toggle = this.toggle.bind(this);
+				 toggle(-1);}, 3000);
 			$('#board').css('pointer-events', 'auto');
-			render();	
 		}
   	}
 
@@ -107,7 +104,7 @@ class Demo extends React.Component {
 					</div>
 					<br />
 					<div>
-						<p>{x + " "+ this.state.matches}</p>
+						<p>{x}</p>
 						<button className = "restart" onClick = {() => restart()}> restart </button>
 					</div>
 				</div>

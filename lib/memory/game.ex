@@ -37,23 +37,19 @@ defmodule Memory.Game do
     y = Enum.at(v, i)
 
     {c, a, f, s, m, sc} = cond do
+      a == 2 -> {c, 0, -1, -1, m, sc}
       a == 0 && f != i && y != 1 -> {c + 1, 1, i, -1, m, sc}
       a == 1 && f != i && Enum.at(t, f) == x && y != 1-> {c + 1, 0, f, i, m + 1, sc + 10}
       a == 1 && f != i && Enum.at(t,f) != x && y != 1 -> {c + 1, 2, f, i, m, sc - 2}
       true -> {c, a, f, s, m, sc} 	
     end
 
-    if Enum.at(t, f) == Enum.at(t,s) do 
+    if Enum.at(t, f) == Enum.at(t,s) && f != -1 do 
        v = List.replace_at(v, f, 1)
        v = List.replace_at(v, i, 1)
     end
     %{state | clicks: c, visible: v, active: a, first: f, second: s, matches: m, score: sc}
     
-  end
-
-  def reset(state) do
-    x = -1;
-    %{state | first: x, second: x, active: 0}
   end
 
   def make_tiles do
